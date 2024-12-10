@@ -1,0 +1,16 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandJob.schema.json
+code: .  # Points to the current directory containing Model.py and dataset.xlsx
+command: >
+  python Model.py --trainingdata ${{inputs.training_data}} --output_model ${{outputs.trained_model}}
+inputs:
+  training_data:
+    type: uri_file
+    path: azureml:har_dataset:2 
+      # Ensure this dataset is registered in Azure ML
+outputs:
+  trained_model:
+    type: uri_folder
+environment: azureml://registries/azureml/environments/sklearn-1.1-ubuntu20.04-py38-cpu/versions/17
+compute: MLOPS
+experiment_name: har_project_experiment
+description: Human Activity Recognition project for classifying walking and jogging
